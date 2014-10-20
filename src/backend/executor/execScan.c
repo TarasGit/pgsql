@@ -129,7 +129,7 @@ ExecScan(ScanState *node,
 	if (!qual && !projInfo)
 	{
 		ResetExprContext(econtext);
-		return ExecScanFetch(node, accessMtd, recheckMtd);
+		return ExecScanFetch(node, accessMtd, recheckMtd);								// Taras - return Tuple** //
 	}
 
 	/*

@@ -48,7 +48,7 @@ static void ExecHashSkewTableInsert(HashJoinTable hashtable,
 static void ExecHashRemoveNextSkewBucket(HashJoinTable hashtable);
 
 static void *dense_alloc(HashJoinTable hashtable, Size size);
-
+#define HJDEBUG 1																	//Taras - enable debug //
 /* ----------------------------------------------------------------
  *		ExecHash
  *
@@ -100,7 +100,7 @@ MultiExecHash(HashState *node)
 	 */
 	for (;;)
 	{
-		slot = ExecProcNode(outerNode);
+		slot = ExecProcNode(outerNode);												// Taras - return Tuple** //
 		if (TupIsNull(slot))
 			break;
 		/* We have to compute the hash value */

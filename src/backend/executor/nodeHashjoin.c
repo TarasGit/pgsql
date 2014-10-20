@@ -151,7 +151,7 @@ ExecHashJoin(HashJoinState *node)
 						 (outerNode->plan->startup_cost < hashNode->ps.plan->total_cost &&
 						  !node->hj_OuterNotEmpty))
 				{
-					node->hj_FirstOuterTupleSlot = ExecProcNode(outerNode);
+					node->hj_FirstOuterTupleSlot = ExecProcNode(outerNode);									// Taras - return Tuple* or Tuple** ??? //
 					if (TupIsNull(node->hj_FirstOuterTupleSlot))
 					{
 						node->hj_OuterNotEmpty = false;
@@ -175,7 +175,7 @@ ExecHashJoin(HashJoinState *node)
 				 * execute the Hash node, to build the hash table
 				 */
 				hashNode->hashtable = hashtable;
-				(void) MultiExecProcNode((PlanState *) hashNode);
+				(void) MultiExecProcNode((PlanState *) hashNode);									//  Taras - return Tuple** //
 
 				/*
 				 * If the inner relation is completely empty, and we're not
@@ -662,7 +662,7 @@ ExecHashJoinOuterGetTuple(PlanState *outerNode,
 		if (!TupIsNull(slot))
 			hjstate->hj_FirstOuterTupleSlot = NULL;
 		else
-			slot = ExecProcNode(outerNode);
+			slot = ExecProcNode(outerNode);												// Taras - return Tuple** //
 
 		while (!TupIsNull(slot))
 		{
@@ -688,7 +688,7 @@ ExecHashJoinOuterGetTuple(PlanState *outerNode,
 			 * That tuple couldn't match because of a NULL, so discard it and
 			 * continue with the next one.
 			 */
-			slot = ExecProcNode(outerNode);
+			slot = ExecProcNode(outerNode);														// Taras - return Tuple** //
 		}
 	}
 	else if (curbatch < hashtable->nbatch)

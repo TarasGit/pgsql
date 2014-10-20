@@ -352,7 +352,7 @@ ExecInitNode(Plan *node, EState *estate, int eflags)
  * ----------------------------------------------------------------
  */
 TupleTableSlot *
-ExecProcNode(PlanState *node)
+ExecProcNode(PlanState *node)															// Taras - return TupleTableSlot** //
 {
 	TupleTableSlot *result;
 
@@ -397,48 +397,48 @@ ExecProcNode(PlanState *node)
 			 * scan nodes
 			 */
 		case T_SeqScanState:
-			result = ExecSeqScan((SeqScanState *) node);
+			result = ExecSeqScan((SeqScanState *) node);					// Taras - hashjoin(2) //
 			break;
 
-		case T_IndexScanState:
+		case T_IndexScanState:													// Taras - call ExecScan() //
 			result = ExecIndexScan((IndexScanState *) node);
 			break;
 
-		case T_IndexOnlyScanState:
+		case T_IndexOnlyScanState:												// Taras - call ExecScan() //
 			result = ExecIndexOnlyScan((IndexOnlyScanState *) node);
 			break;
 
 			/* BitmapIndexScanState does not yield tuples */
 
-		case T_BitmapHeapScanState:
+		case T_BitmapHeapScanState:												// Taras - call ExecScan() //
 			result = ExecBitmapHeapScan((BitmapHeapScanState *) node);
 			break;
 
-		case T_TidScanState:
+		case T_TidScanState:													// Taras - call ExecScan() //
 			result = ExecTidScan((TidScanState *) node);
 			break;
 
 		case T_SubqueryScanState:
-			result = ExecSubqueryScan((SubqueryScanState *) node);
+			result = ExecSubqueryScan((SubqueryScanState *) node);				// Taras - call ExecScan() //
 			break;
 
-		case T_FunctionScanState:
+		case T_FunctionScanState:												// Taras - call ExecScan() //
 			result = ExecFunctionScan((FunctionScanState *) node);
 			break;
 
 		case T_ValuesScanState:
-			result = ExecValuesScan((ValuesScanState *) node);
+			result = ExecValuesScan((ValuesScanState *) node);					// Taras - call ExecScan() //
 			break;
 
-		case T_CteScanState:
+		case T_CteScanState:													// Taras - call ExecScan() //
 			result = ExecCteScan((CteScanState *) node);
 			break;
 
-		case T_WorkTableScanState:
+		case T_WorkTableScanState:												// Taras - call ExecScan() //
 			result = ExecWorkTableScan((WorkTableScanState *) node);
 			break;
 
-		case T_ForeignScanState:
+		case T_ForeignScanState:												// Taras - call ExecScan() //
 			result = ExecForeignScan((ForeignScanState *) node);
 			break;
 
@@ -454,7 +454,7 @@ ExecProcNode(PlanState *node)
 			break;
 
 		case T_HashJoinState:
-			result = ExecHashJoin((HashJoinState *) node);
+			result = ExecHashJoin((HashJoinState *) node);				// Taras - hashjoin(1)(3) //
 			break;
 
 			/*
@@ -543,7 +543,7 @@ MultiExecProcNode(PlanState *node)
 			 */
 
 		case T_HashState:
-			result = MultiExecHash((HashState *) node);
+			result = MultiExecHash((HashState *) node);								// Taras - hashjoin(...) //
 			break;
 
 		case T_BitmapIndexScanState:

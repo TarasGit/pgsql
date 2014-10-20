@@ -44,7 +44,7 @@ static TupleTableSlot *SeqNext(SeqScanState *node);
  * ----------------------------------------------------------------
  */
 static TupleTableSlot *
-SeqNext(SeqScanState *node)
+SeqNext(SeqScanState *node)																// Taras - return Tuple** //
 {
 	HeapTuple	tuple;
 	HeapScanDesc scandesc;
@@ -63,7 +63,7 @@ SeqNext(SeqScanState *node)
 	/*
 	 * get the next tuple from the table
 	 */
-	tuple = heap_getnext(scandesc, direction);
+	tuple = heap_getnext(scandesc, direction);												// return tuple -> need slot! //
 
 	/*
 	 * save the tuple and the buffer returned to us by the access methods in
@@ -80,9 +80,9 @@ SeqNext(SeqScanState *node)
 												 * tuple */
 					   false);	/* don't pfree this pointer */
 	else
-		ExecClearTuple(slot);
+		ExecClearTuple(slot);															// Taras - fill buffer with ExecStoreTuple //
 
-	return slot;
+	return slot;																		// Taras - return Tuple** //
 }
 
 /*
